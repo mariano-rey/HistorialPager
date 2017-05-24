@@ -4,13 +4,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.List;
 
-import co.dift.ui.SwipeToAction;
-import lds.historialpager.MainActivity;
-import lds.historialpager.R;
 
 
 class PerfilesAdapter extends RecyclerView.Adapter<PerfilesAdapter.ViewHolder> {

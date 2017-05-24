@@ -9,6 +9,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
@@ -53,6 +54,8 @@ public class Rivales extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rV1.setLayoutManager(linearLayoutManager);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rV1.getContext(), linearLayoutManager.getOrientation());
+        rV1.addItemDecoration(dividerItemDecoration);
         rV1.setHasFixedSize(true);
         adapter = new PerfilesAdapter(this, listaPerfiles);
         rV1.setAdapter(adapter);
@@ -72,9 +75,9 @@ public class Rivales extends Fragment {
         rV1.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if(dy > 0){
+                if (dy > 0) {
                     agregarperfil.hide();
-                } else{
+                } else {
                     agregarperfil.show();
                 }
 
