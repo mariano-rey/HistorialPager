@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/HistorialPager.iml" filepath="$PROJECT_DIR$/HistorialPager.iml" />
+      <module fileurl="file://D:\Proyectos\Android\HistorialPager\HistorialPager.iml" filepath="D:\Proyectos\Android\HistorialPager\HistorialPager.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://D:\Proyectos\Android\HistorialPager\app\app.iml" filepath="D:\Proyectos\Android\HistorialPager\app\app.iml" />
     </modules>
   </component>
 </project>

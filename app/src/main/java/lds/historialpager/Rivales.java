@@ -61,12 +61,7 @@ public class Rivales extends Fragment {
         rV1.setAdapter(adapter);
 
         agregarperfil = (FloatingActionButton) rootView.findViewById(R.id.floatingActionButton);
-        agregarperfil.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                agregarRival();
-            }
-        });
+        agregarperfil.setOnClickListener(view -> agregarRival());
 
         // HAY QUE PENSAR
         // COMO ELIMINAR LOS RIVALES
@@ -85,6 +80,12 @@ public class Rivales extends Fragment {
             }
         });
 
+        rV1.setOnClickListener(view -> {
+            Intent intent = new Intent(getContext(), RivalesHistorial.class);
+            intent.putExtra(PERFIL, listaPerfiles.toString());
+            getContext().startActivity(intent);
+        });
+
         return rootView;
     }
 
@@ -96,29 +97,20 @@ public class Rivales extends Fragment {
         alert.setTitle("Nuevo Rival");
         alert.setMessage("Ingrese Nombre");
         alert.setView(edittext);
-        alert.setPositiveButton("Guardar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                String respuesta = edittext.getText().toString();
-                if (TextUtils.isEmpty(respuesta)) {
-                    Snackbar snackbar = Snackbar.make(rV1, "Completa gato!", Snackbar.LENGTH_LONG);
-                    snackbar.setAction("Reintentar", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            agregarRival();
-                        }
-                    });
-                    snackbar.show();
+        alert.setPositiveButton("Guardar", (dialogInterface, i) -> {
+            String respuesta = edittext.getText().toString();
+            if (TextUtils.isEmpty(respuesta)) {
+                Snackbar snackbar = Snackbar.make(rV1, "Completa gato!", Snackbar.LENGTH_LONG);
+                snackbar.setAction("Reintentar", view -> agregarRival());
+                snackbar.show();
 
-                } else {
+            } else {
 
-                    Historial historial = new Historial(respuesta);
-                    historial.save();
+                Historial historial = new Historial(respuesta);
+                historial.save();
 
-                    ActualizarLista();
-                }
+                ActualizarLista();
             }
-
         });
         alert.show();
     }

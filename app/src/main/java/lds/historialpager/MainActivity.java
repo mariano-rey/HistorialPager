@@ -1,6 +1,5 @@
 package lds.historialpager;
 
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -14,7 +13,6 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.EditText;
 
 
@@ -57,21 +55,14 @@ public class MainActivity extends AppCompatActivity {
         alert.setTitle(titulo);
         alert.setMessage(mensaje);
         alert.setView(edittext);
-        alert.setPositiveButton("Guardar", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                String respuesta = edittext.getText().toString();
-                if (TextUtils.isEmpty(respuesta)) {
-                    Snackbar snackbar = Snackbar.make(viewPager, "Completa gato!", Snackbar.LENGTH_LONG);
-                    snackbar.setAction("Reintentar", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            dialogPedirNombre("Nuevo Usuario", "Ingrese Nombre: ");
-                        }
-                    });
-                    snackbar.show();
-                } else {
-                    memoria.edit().putString(PERFIL, respuesta).apply();
-                }
+        alert.setPositiveButton("Guardar", (dialog, whichButton) -> {
+            String respuesta = edittext.getText().toString();
+            if (TextUtils.isEmpty(respuesta)) {
+                Snackbar snackbar = Snackbar.make(viewPager, "Completa gato!", Snackbar.LENGTH_LONG);
+                snackbar.setAction("Reintentar", view -> dialogPedirNombre("Nuevo Usuario", "Ingrese Nombre: "));
+                snackbar.show();
+            } else {
+                memoria.edit().putString(PERFIL, respuesta).apply();
             }
         });
 
