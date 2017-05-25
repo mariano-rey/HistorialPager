@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RivalesHistorial extends AppCompatActivity {
@@ -18,6 +19,8 @@ public class RivalesHistorial extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rivales_historial);
+
+        listaResultados = new ArrayList<>();
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rv_resultados);
         recyclerView.setAdapter(new ResultadosAdapter(this, listaResultados));
