@@ -80,11 +80,7 @@ public class Rivales extends Fragment {
             }
         });
 
-        rV1.setOnClickListener(view -> {
-            Intent intent = new Intent(getContext(), RivalesHistorial.class);
-            intent.putExtra(PERFIL, listaPerfiles.toString());
-            getContext().startActivity(intent);
-        });
+
 
         return rootView;
     }

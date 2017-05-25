@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         alert.setTitle(titulo);
         alert.setMessage(mensaje);
         alert.setView(edittext);
+        alert.setCancelable(false);
         alert.setPositiveButton("Guardar", (dialog, whichButton) -> {
             String respuesta = edittext.getText().toString();
             if (TextUtils.isEmpty(respuesta)) {
