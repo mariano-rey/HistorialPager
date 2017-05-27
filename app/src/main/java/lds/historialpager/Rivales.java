@@ -1,9 +1,5 @@
 package lds.historialpager;
 
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -25,13 +21,8 @@ import java.util.List;
 public class Rivales extends Fragment {
     View rootView;
 
-    private static final String HISTORIAL = "Historial";
-    private static final String PERFIL = "Perfil";
-
     private RecyclerView rV1;
     private FloatingActionButton agregarperfil;
-
-    private SharedPreferences memoria;
 
     private List<Historial> listaPerfiles;
     private PerfilesAdapter adapter;
@@ -47,7 +38,6 @@ public class Rivales extends Fragment {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_rivales, container, false);
 
-        memoria = this.getActivity().getSharedPreferences(HISTORIAL, Context.MODE_PRIVATE);
         listaPerfiles = Historial.perfiles();
 
         rV1 = (RecyclerView) rootView.findViewById(R.id.rV1);
@@ -60,7 +50,7 @@ public class Rivales extends Fragment {
         adapter = new PerfilesAdapter(this, listaPerfiles);
         rV1.setAdapter(adapter);
 
-        agregarperfil = (FloatingActionButton) rootView.findViewById(R.id.floatingActionButton);
+        agregarperfil = (FloatingActionButton) rootView.findViewById(R.id.agregarPerfil);
         agregarperfil.setOnClickListener(view -> agregarRival());
 
         // HAY QUE PENSAR

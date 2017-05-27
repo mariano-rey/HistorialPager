@@ -15,7 +15,6 @@ import java.util.List;
 @Table(name = "Historial", id = "_id")
 public class Historial extends Model {
 
-
     @Column(name = "Rival", unique = true)
     public String rival;
 
@@ -34,8 +33,7 @@ public class Historial extends Model {
                 .execute();
     }
 
-    @Override
-    public String toString() {
+    public String getRival() {
         return rival;
     }
 

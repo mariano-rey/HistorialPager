@@ -7,13 +7,13 @@
 
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floatingActionButton"
+        android:id="@+id/agregarPerfil"
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:layout_marginBottom="102dp"
         android:layout_marginRight="29dp"
         android:layout_marginTop="8dp"
-        android:clickable="true"
+        android:focusable="true"
         app:backgroundTint="@color/colorPrimaryDark"
         app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"

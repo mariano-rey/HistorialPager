@@ -50,6 +50,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <EditText
+            android:id="@+id/equipoLocal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Local"
@@ -70,6 +71,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <EditText
+            android:id="@+id/golesLocal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Goles Local"
@@ -89,6 +91,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <EditText
+            android:id="@+id/golesVisitante"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Goles Visitante"
@@ -106,6 +109,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <EditText
+            android:id="@+id/equipoVisitante"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Visitante"

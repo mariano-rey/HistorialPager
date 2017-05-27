@@ -43,24 +43,24 @@ public class MainActivity extends AppCompatActivity {
 
         boolean existeUsuario = memoria.getString(PERFIL, null) != null;
         if (!existeUsuario)
-            dialogPedirNombre("Nuevo Usuario", "Ingrese Nombre: ");
+            dialogPedirNombre();
 
     }
 
-    private void dialogPedirNombre(String titulo, String mensaje) {
+    private void dialogPedirNombre() {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
         final EditText edittext = new EditText(this);
         edittext.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
-        alert.setTitle(titulo);
-        alert.setMessage(mensaje);
+        alert.setTitle("Nuevo Usuario");
+        alert.setMessage("Ingrese Nombre: ");
         alert.setView(edittext);
         alert.setCancelable(false);
         alert.setPositiveButton("Guardar", (dialog, whichButton) -> {
             String respuesta = edittext.getText().toString();
             if (TextUtils.isEmpty(respuesta)) {
                 Snackbar snackbar = Snackbar.make(viewPager, "Completa gato!", Snackbar.LENGTH_LONG);
-                snackbar.setAction("Reintentar", view -> dialogPedirNombre("Nuevo Usuario", "Ingrese Nombre: "));
+                snackbar.setAction("Reintentar", view -> dialogPedirNombre());
                 snackbar.show();
             } else {
                 memoria.edit().putString(PERFIL, respuesta).apply();
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public class SectionPagerAdapter extends FragmentPagerAdapter {
-        public SectionPagerAdapter(FragmentManager fm) {
+        SectionPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 

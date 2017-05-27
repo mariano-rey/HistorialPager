@@ -27,7 +27,7 @@ class PerfilesAdapter extends RecyclerView.Adapter<PerfilesAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.nombre.setText(listaPerfiles.get(position).toString());
+        holder.nombre.setText(listaPerfiles.get(position).getRival());
 
     }
 
@@ -45,9 +45,9 @@ class PerfilesAdapter extends RecyclerView.Adapter<PerfilesAdapter.ViewHolder> {
             nombre = (TextView) itemView.findViewById(R.id.nombre);
 
             itemView.setOnClickListener(view -> {
-                Intent intent = new Intent(context, RivalesHistorial.class);
-                intent.putExtra("nombre", nombre.getText());
-                context.startActivity(intent);
+                Intent rivalesHistorial = new Intent(context, RivalesHistorial.class);
+                rivalesHistorial.putExtra("nombre", nombre.getText());
+                context.startActivity(rivalesHistorial);
             });
         }
     }
