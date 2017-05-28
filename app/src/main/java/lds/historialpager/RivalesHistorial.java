@@ -1,6 +1,5 @@
 package lds.historialpager;
 
-import android.content.DialogInterface;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -30,7 +29,6 @@ public class RivalesHistorial extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
-        cargarResultados();
         adapter = new ResultadosAdapter(this, listaPartidos);
         recyclerView.setAdapter(adapter);
 
@@ -43,36 +41,27 @@ public class RivalesHistorial extends AppCompatActivity {
     private void agregarResultado() {
         View v = View.inflate(this, R.layout.dialog_resultado, null);
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        final EditText editText = new EditText(this);
+        final EditText editText1 = new EditText(this);
+        final EditText editText2 = new EditText(this);
+        final EditText editText3 = new EditText(this);
         alert.setView(v);
-        alert.setPositiveButton("Guardar", (dialogInterface, i) -> cargarResultados());
+        alert.setPositiveButton("Guardar", (dialogInterface, i) -> {
+                    String nombreLocal = editText.getText().toString();
+                    String nombreVisitante = editText1.getText().toString();
+                    String golesLocal = editText2.getText().toString();
+                    String golesVisitante = editText3.getText().toString();
+
+                    //ARREGLAR ESTO!!!
+
+                    Partido partido = new Partido(nombreLocal, nombreVisitante, golesLocal, golesVisitante, null);
+                    partido.save();
+
+                    ActualizarLista();
+                }
+        );
 
         alert.show();
-    }
-
-    private void cargarResultados() {
-        EditText equipoLocal, equipoVisitante, golesLocal, golesVisitante;
-        LayoutInflater inflater = getLayoutInflater();
-
-        equipoLocal = (EditText) inflater.inflate(R.layout.dialog_resultado, null);
-        final EditText user = (EditText) equipoLocal.findViewById(R.id.equipoLocal);
-        String nombreLocal = user.getText().toString();
-
-        equipoVisitante = (EditText) inflater.inflate(R.layout.dialog_resultado, null);
-        final EditText user1 = (EditText) equipoVisitante.findViewById(R.id.equipoVisitante);
-        String nombreVisitante = user1.getText().toString();
-
-        golesLocal = (EditText) inflater.inflate(R.layout.dialog_resultado, null);
-        final EditText user2 = (EditText) golesLocal.findViewById(R.id.golesLocal);
-        String golesL = user2.getText().toString();
-
-        golesVisitante = (EditText) inflater.inflate(R.layout.dialog_resultado, null);
-        final EditText user3 = (EditText) golesVisitante.findViewById(R.id.golesVisitante);
-        String golesV = user3.getText().toString();
-
-        Partido partido = new Partido(nombreLocal, nombreVisitante, golesL, golesV, null);
-        partido.save();
-
-        ActualizarLista();
     }
 
     private void ActualizarLista() {
