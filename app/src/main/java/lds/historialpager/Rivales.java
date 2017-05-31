@@ -15,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.bignerdranch.android.multiselector.MultiSelector;
+
 import java.util.List;
 
 
@@ -53,9 +55,10 @@ public class Rivales extends Fragment {
         agregarperfil = (FloatingActionButton) rootView.findViewById(R.id.agregarPerfil);
         agregarperfil.setOnClickListener(view -> agregarRival());
 
-        // HAY QUE PENSAR
-        // COMO ELIMINAR LOS RIVALES
-        // UN DISEÑO PIOLA PARA EL RECYCLER
+        MultiSelector multiSelector = new MultiSelector();
+        multiSelector.setSelectable(true);
+        multiSelector.setSelectable(false);
+
 
         rV1.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -71,12 +74,11 @@ public class Rivales extends Fragment {
         });
 
 
-
         return rootView;
     }
 
     private void agregarRival() {
-        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
 
         final EditText edittext = new EditText(getActivity());
         edittext.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);

@@ -2,18 +2,32 @@ package lds.historialpager;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.view.ActionMode;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.activeandroid.query.Delete;
+import com.bignerdranch.android.multiselector.ModalMultiSelectorCallback;
+import com.bignerdranch.android.multiselector.MultiSelector;
+import com.bignerdranch.android.multiselector.SwappingHolder;
 
 import java.util.List;
 
 
-
 class PerfilesAdapter extends RecyclerView.Adapter<PerfilesAdapter.ViewHolder> {
     private List<Historial> listaPerfiles;
+    private MultiSelector multiSelector = new MultiSelector();
+    private ModalMultiSelectorCallback multiSelectorCallback = new ModalMultiSelectorCallback(multiSelector) {
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            return false;
+        }
+    };
 
     PerfilesAdapter(Rivales rivales, List<Historial> listaPerfiles) {
         this.listaPerfiles = listaPerfiles;
@@ -28,7 +42,6 @@ class PerfilesAdapter extends RecyclerView.Adapter<PerfilesAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.nombre.setText(listaPerfiles.get(position).getRival());
-
     }
 
     @Override
@@ -36,19 +49,40 @@ class PerfilesAdapter extends RecyclerView.Adapter<PerfilesAdapter.ViewHolder> {
         return listaPerfiles.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends SwappingHolder implements View.OnLongClickListener {
         TextView nombre;
+        ImageButton borrar;
 
         ViewHolder(View itemView, Context context) {
-            super(itemView);
+            super(itemView, multiSelector);
+            itemView.setLongClickable(true);
 
             nombre = (TextView) itemView.findViewById(R.id.nombre);
+            borrar = (ImageButton) itemView.findViewById(R.id.borrar);
 
             itemView.setOnClickListener(view -> {
                 Intent rivalesHistorial = new Intent(context, RivalesHistorial.class);
                 rivalesHistorial.putExtra("nombre", nombre.getText());
                 context.startActivity(rivalesHistorial);
             });
+
+            borrar.setOnClickListener(view -> {
+                new Delete().from(Historial.class).where("rival = ?", nombre.getId()).execute();
+                listaPerfiles.clear();
+                listaPerfiles.addAll(Historial.perfiles());
+                notifyDataSetChanged();
+            });
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            if (!multiSelector.isSelectable()) {
+//                ((AppCompatActivity)getContext).startSupportActionMode(multiSelectorCallback);
+                multiSelector.setSelectable(true);
+                multiSelector.setSelected(ViewHolder.this, true);
+                return true;
+            }
+            return false;
         }
     }
 }

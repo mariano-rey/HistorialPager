@@ -1,9 +1,9 @@
 package lds.historialpager;
 
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,7 +18,7 @@ import java.util.List;
 public class RivalesHistorial extends AppCompatActivity {
 
     private List<Partido> listaPartidos = new ArrayList<>();
-    private ResultadosAdapter adapter;
+    private PartidosAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +29,7 @@ public class RivalesHistorial extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
-        adapter = new ResultadosAdapter(this, listaPartidos);
+        adapter = new PartidosAdapter(this, listaPartidos);
         recyclerView.setAdapter(adapter);
 
         FloatingActionButton agregarResultado = (FloatingActionButton) findViewById(R.id.agregarPartido);
@@ -52,8 +52,6 @@ public class RivalesHistorial extends AppCompatActivity {
                     String golesLocal = editText2.getText().toString();
                     String golesVisitante = editText3.getText().toString();
 
-                    //ARREGLAR ESTO!!!
-
                     Partido partido = new Partido(nombreLocal, nombreVisitante, golesLocal, golesVisitante, null);
                     partido.save();
 
@@ -70,22 +68,22 @@ public class RivalesHistorial extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
-    private class ResultadosAdapter extends RecyclerView.Adapter<ResultadosViewHolder> {
+    private class PartidosAdapter extends RecyclerView.Adapter<PartidosViewHolder> {
 
         private List<Partido> listaPartidos;
 
-        ResultadosAdapter(RivalesHistorial rivalesHistorial, List<Partido> listaPartidos) {
+        PartidosAdapter(RivalesHistorial rivalesHistorial, List<Partido> listaPartidos) {
             this.listaPartidos = listaPartidos;
         }
 
         @Override
-        public ResultadosViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public PartidosViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_resultados, parent, false);
-            return new ResultadosViewHolder(itemView);
+            return new PartidosViewHolder(itemView);
         }
 
         @Override
-        public void onBindViewHolder(ResultadosViewHolder holder, int position) {
+        public void onBindViewHolder(PartidosViewHolder holder, int position) {
             holder.equipoLocal.setText(listaPartidos.get(position).getEquipoLocal());
             holder.golesLocal.setText(listaPartidos.get(position).getGolesLocal());
             holder.golesVisitante.setText(listaPartidos.get(position).getGolesVisitante());
@@ -98,10 +96,10 @@ public class RivalesHistorial extends AppCompatActivity {
         }
     }
 
-    private class ResultadosViewHolder extends RecyclerView.ViewHolder {
+    private class PartidosViewHolder extends RecyclerView.ViewHolder {
         TextView equipoLocal, golesLocal, golesVisitante, equipoVisitante;
 
-        ResultadosViewHolder(View itemView) {
+        PartidosViewHolder(View itemView) {
             super(itemView);
 
             equipoLocal = (TextView) itemView.findViewById(R.id.textView1);
