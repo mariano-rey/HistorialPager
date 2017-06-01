@@ -15,6 +15,15 @@ import java.util.List;
 @Table(name = "Partido", id = "_id")
 public class Partido extends Model {
 
+    public boolean soyLocal() {
+        return QuienSos == QUIENES.Local.ordinal();
+    }
+
+    public enum QUIENES {
+        Local,
+        Vistitante
+    }
+
     @Column(name = "Local")
     public String Local;
 
@@ -22,29 +31,36 @@ public class Partido extends Model {
     public String Visitante;
 
     @Column(name = "GolesLocal")
-    public String GolesLocal;
+    public int GolesLocal;
 
     @Column(name = "GolesVisitante")
-    public String GolesVisitante;
+    public int GolesVisitante;
 
-    @Column(name = "historial")
+    @Column(name = "QuienSos")
+    public  int QuienSos;
+
+    @Column(name = "historial", onDelete = Column.ForeignKeyAction.CASCADE)
     public Historial historial;
 
 
     public Partido() {
     }
 
-    public static List<Partido> partidos() {
+    public static List<Partido> partidos(String nombreRival) {
         return new Select()
                 .from(Partido.class)
+                .join(Historial.class)
+                .on("Historial._id = Partido.historial")
+                .where("Historial.rival = ?", nombreRival)
                 .execute();
     }
 
-    public Partido(String local, String visitante, String golesLocal, String golesVisitante, Historial historial) {
+    public Partido(String local, String visitante, int golesLocal, int golesVisitante, int quienSos, Historial historial) {
         this.Local = local;
         this.Visitante = visitante;
         this.GolesLocal = golesLocal;
         this.GolesVisitante = golesVisitante;
+        this.QuienSos = quienSos;
         this.historial = historial;
     }
 
@@ -56,11 +72,11 @@ public class Partido extends Model {
         return Visitante;
     }
 
-    String getGolesLocal() {
+    int getGolesLocal() {
         return GolesLocal;
     }
 
-    String getGolesVisitante() {
+    int getGolesVisitante() {
         return GolesVisitante;
     }
 }

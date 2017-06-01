@@ -22,6 +22,10 @@ public class Historial extends Model {
         super();
     }
 
+    /**
+     * En realidad es un Rival
+     * @param rival el nombre del rival
+     */
     public Historial(String rival) {
         super();
         this.rival = rival;
@@ -37,4 +41,10 @@ public class Historial extends Model {
         return rival;
     }
 
+    public static Historial actual(String nombreRival) {
+        return new Select()
+                .from(Historial.class)
+                .where("rival = ?", nombreRival)
+                .executeSingle();
+    }
 }

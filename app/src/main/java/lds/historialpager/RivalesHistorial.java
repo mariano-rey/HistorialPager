@@ -1,34 +1,48 @@
 package lds.historialpager;
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.VectorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RivalesHistorial extends AppCompatActivity {
 
-    private List<Partido> listaPartidos = new ArrayList<>();
+    private List<Partido> listaPartidos;
     private PartidosAdapter adapter;
+    private String nombreRival;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rivales_historial);
 
+        nombreRival = getIntent().getExtras().getString("nombre");
+
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rv_resultados);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
+
+        listaPartidos = Partido.partidos(nombreRival);
+
         adapter = new PartidosAdapter(this, listaPartidos);
         recyclerView.setAdapter(adapter);
 
@@ -38,21 +52,37 @@ public class RivalesHistorial extends AppCompatActivity {
 
     }
 
+
     private void agregarResultado() {
         View v = View.inflate(this, R.layout.dialog_resultado, null);
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        final EditText editText = new EditText(this);
-        final EditText editText1 = new EditText(this);
-        final EditText editText2 = new EditText(this);
-        final EditText editText3 = new EditText(this);
+        EditText editText = (EditText) v.findViewById(R.id.equipoLocal);
+        final EditText editText1 = (EditText) v.findViewById(R.id.equipoVisitante);
+        final EditText editText2 = (EditText) v.findViewById(R.id.golesLocal);
+        final EditText editText3 = (EditText) v.findViewById(R.id.golesVisitante);
+        final Switch swQuienSos = (Switch) v.findViewById(R.id.switch1);
+
+        editText2.setOnKeyListener((view, i, keyEvent) -> {
+            if (keyEvent.getAction() == KeyEvent.ACTION_UP) {
+                if (editText2.getText().length() == 1) {
+                    editText3.requestFocus();
+                }
+            }
+            //TODO
+            // ARREGLAR ESTO
+            return true;
+        });
+
         alert.setView(v);
         alert.setPositiveButton("Guardar", (dialogInterface, i) -> {
                     String nombreLocal = editText.getText().toString();
                     String nombreVisitante = editText1.getText().toString();
-                    String golesLocal = editText2.getText().toString();
-                    String golesVisitante = editText3.getText().toString();
+                    int golesLocal = Integer.parseInt(editText2.getText().toString());
+                    int golesVisitante = Integer.parseInt(editText3.getText().toString());
 
-                    Partido partido = new Partido(nombreLocal, nombreVisitante, golesLocal, golesVisitante, null);
+                    Historial historial = Historial.actual(nombreRival);
+
+                    Partido partido = new Partido(nombreLocal, nombreVisitante, golesLocal, golesVisitante, swQuienSos.isChecked() ? Partido.QUIENES.Vistitante.ordinal() : Partido.QUIENES.Local.ordinal(), historial);
                     partido.save();
 
                     ActualizarLista();
@@ -60,11 +90,13 @@ public class RivalesHistorial extends AppCompatActivity {
         );
 
         alert.show();
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 
     private void ActualizarLista() {
         listaPartidos.clear();
-        listaPartidos.addAll(Partido.partidos());
+        listaPartidos.addAll(Partido.partidos(nombreRival));
         adapter.notifyDataSetChanged();
     }
 
@@ -84,10 +116,20 @@ public class RivalesHistorial extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(PartidosViewHolder holder, int position) {
-            holder.equipoLocal.setText(listaPartidos.get(position).getEquipoLocal());
-            holder.golesLocal.setText(listaPartidos.get(position).getGolesLocal());
-            holder.golesVisitante.setText(listaPartidos.get(position).getGolesVisitante());
-            holder.equipoVisitante.setText(listaPartidos.get(position).getEquipoVisitante());
+
+            Partido actual = listaPartidos.get(position);
+
+            holder.equipoLocal.setText(actual.getEquipoLocal());
+            holder.golesLocal.setText(String.valueOf(actual.getGolesLocal()));
+            holder.golesVisitante.setText(String.valueOf(actual.getGolesVisitante()));
+            holder.equipoVisitante.setText(actual.getEquipoVisitante());
+
+            Drawable punto = AppCompatResources.getDrawable(getApplicationContext(), R.drawable.ic_yo);
+            if (actual.soyLocal())
+                holder.equipoLocal.setCompoundDrawablesWithIntrinsicBounds(punto, null, null, null);
+            else
+                holder.equipoVisitante.setCompoundDrawablesWithIntrinsicBounds(null, null, punto, null);
+
         }
 
         @Override

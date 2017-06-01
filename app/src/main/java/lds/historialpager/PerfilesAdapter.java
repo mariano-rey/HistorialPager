@@ -49,7 +49,7 @@ class PerfilesAdapter extends RecyclerView.Adapter<PerfilesAdapter.ViewHolder> {
         return listaPerfiles.size();
     }
 
-    class ViewHolder extends SwappingHolder implements View.OnLongClickListener {
+    class ViewHolder extends SwappingHolder {
         TextView nombre;
         ImageButton borrar;
 
@@ -57,32 +57,30 @@ class PerfilesAdapter extends RecyclerView.Adapter<PerfilesAdapter.ViewHolder> {
             super(itemView, multiSelector);
             itemView.setLongClickable(true);
 
+            itemView.setOnLongClickListener(view -> {
+                multiSelector.setSelectable(true);
+                multiSelector.setSelected(ViewHolder.this, true);
+                return true;
+            });
             nombre = (TextView) itemView.findViewById(R.id.nombre);
             borrar = (ImageButton) itemView.findViewById(R.id.borrar);
 
             itemView.setOnClickListener(view -> {
-                Intent rivalesHistorial = new Intent(context, RivalesHistorial.class);
-                rivalesHistorial.putExtra("nombre", nombre.getText());
-                context.startActivity(rivalesHistorial);
+                if (!multiSelector.isSelectable()) {
+                    Intent rivalesHistorial = new Intent(context, RivalesHistorial.class);
+                    rivalesHistorial.putExtra("nombre", nombre.getText());
+                    context.startActivity(rivalesHistorial);
+                }
             });
 
             borrar.setOnClickListener(view -> {
-                new Delete().from(Historial.class).where("rival = ?", nombre.getId()).execute();
+                new Delete().from(Historial.class).where("rival = ?", nombre.getText()).execute();
                 listaPerfiles.clear();
                 listaPerfiles.addAll(Historial.perfiles());
                 notifyDataSetChanged();
             });
         }
 
-        @Override
-        public boolean onLongClick(View view) {
-            if (!multiSelector.isSelectable()) {
-//                ((AppCompatActivity)getContext).startSupportActionMode(multiSelectorCallback);
-                multiSelector.setSelectable(true);
-                multiSelector.setSelected(ViewHolder.this, true);
-                return true;
-            }
-            return false;
-        }
+
     }
 }
