@@ -1,5 +1,6 @@
 package lds.historialpager;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,6 +14,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.bignerdranch.android.multiselector.MultiSelector;
@@ -88,9 +90,9 @@ public class Rivales extends Fragment {
         alert.setPositiveButton("Guardar", (dialogInterface, i) -> {
             String respuesta = edittext.getText().toString();
             if (TextUtils.isEmpty(respuesta)) {
-                Snackbar snackbar = Snackbar.make(rV1, "Completa gato!", Snackbar.LENGTH_LONG);
-                snackbar.setAction("Reintentar", view -> agregarRival());
+                Snackbar snackbar = Snackbar.make(rV1, "Ingrese Nombre del Rival", Snackbar.LENGTH_LONG);
                 snackbar.show();
+                agregarRival();
 
             } else {
 
@@ -101,6 +103,8 @@ public class Rivales extends Fragment {
             }
         });
         alert.show();
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 
     private void ActualizarLista() {

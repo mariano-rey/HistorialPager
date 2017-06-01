@@ -1,6 +1,8 @@
 package lds.historialpager;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -9,20 +11,18 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 
 public class MainActivity extends AppCompatActivity {
 
-    private ViewPager viewPager;
-
     private static final String HISTORIAL = "Historial";
     private static final String PERFIL = "Perfil";
-
+    private ViewPager viewPager;
     private SharedPreferences memoria;
 
     @Override
@@ -59,15 +59,17 @@ public class MainActivity extends AppCompatActivity {
         alert.setPositiveButton("Guardar", (dialog, whichButton) -> {
             String respuesta = edittext.getText().toString();
             if (TextUtils.isEmpty(respuesta)) {
-                Snackbar snackbar = Snackbar.make(viewPager, "Completa gato!", Snackbar.LENGTH_LONG);
-                snackbar.setAction("Reintentar", view -> dialogPedirNombre());
+                Snackbar snackbar = Snackbar.make(viewPager, "Ingrese Nombre de Usuario", Snackbar.LENGTH_LONG);
                 snackbar.show();
+                dialogPedirNombre();
             } else {
                 memoria.edit().putString(PERFIL, respuesta).apply();
             }
         });
 
         alert.show();
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 
     public class SectionPagerAdapter extends FragmentPagerAdapter {

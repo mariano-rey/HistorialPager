@@ -7,6 +7,6 @@
     <color name="icons">#FFF</color>
     <color name="item_background">#FFF</color>
     <color name="primary">#2d2d2d</color>
-    <color name="secondary">#FF4081</color>
+    <color name="secondary">#303f9f</color>
     <color name="rojo">#F21</color>
 </resources>

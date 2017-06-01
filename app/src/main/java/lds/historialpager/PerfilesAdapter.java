@@ -8,10 +8,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.activeandroid.query.Delete;
 import com.bignerdranch.android.multiselector.ModalMultiSelectorCallback;
 import com.bignerdranch.android.multiselector.MultiSelector;
 import com.bignerdranch.android.multiselector.SwappingHolder;
@@ -51,7 +49,6 @@ class PerfilesAdapter extends RecyclerView.Adapter<PerfilesAdapter.ViewHolder> {
 
     class ViewHolder extends SwappingHolder {
         TextView nombre;
-        ImageButton borrar;
 
         ViewHolder(View itemView, Context context) {
             super(itemView, multiSelector);
@@ -63,7 +60,6 @@ class PerfilesAdapter extends RecyclerView.Adapter<PerfilesAdapter.ViewHolder> {
                 return true;
             });
             nombre = (TextView) itemView.findViewById(R.id.nombre);
-            borrar = (ImageButton) itemView.findViewById(R.id.borrar);
 
             itemView.setOnClickListener(view -> {
                 if (!multiSelector.isSelectable()) {
@@ -73,14 +69,12 @@ class PerfilesAdapter extends RecyclerView.Adapter<PerfilesAdapter.ViewHolder> {
                 }
             });
 
-            borrar.setOnClickListener(view -> {
-                new Delete().from(Historial.class).where("rival = ?", nombre.getText()).execute();
-                listaPerfiles.clear();
-                listaPerfiles.addAll(Historial.perfiles());
-                notifyDataSetChanged();
-            });
+//            borrar.setOnClickListener(view -> {
+//                new Delete().from(Historial.class).where("rival = ?", nombre.getText()).execute();
+//                listaPerfiles.clear();
+//                listaPerfiles.addAll(Historial.perfiles());
+//                notifyDataSetChanged();
+//            });
         }
-
-
     }
 }

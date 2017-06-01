@@ -2,22 +2,23 @@ package lds.historialpager;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.VectorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.content.res.AppCompatResources;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -26,6 +27,7 @@ import java.util.List;
 public class RivalesHistorial extends AppCompatActivity {
 
     private List<Partido> listaPartidos;
+    private RecyclerView recyclerView;
     private PartidosAdapter adapter;
     private String nombreRival;
 
@@ -36,10 +38,12 @@ public class RivalesHistorial extends AppCompatActivity {
 
         nombreRival = getIntent().getExtras().getString("nombre");
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rv_resultados);
+        recyclerView = (RecyclerView) findViewById(R.id.rv_resultados);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), linearLayoutManager.getOrientation());
+        recyclerView.addItemDecoration(dividerItemDecoration);
 
         listaPartidos = Partido.partidos(nombreRival);
 
@@ -56,38 +60,64 @@ public class RivalesHistorial extends AppCompatActivity {
     private void agregarResultado() {
         View v = View.inflate(this, R.layout.dialog_resultado, null);
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        EditText editText = (EditText) v.findViewById(R.id.equipoLocal);
-        final EditText editText1 = (EditText) v.findViewById(R.id.equipoVisitante);
-        final EditText editText2 = (EditText) v.findViewById(R.id.golesLocal);
-        final EditText editText3 = (EditText) v.findViewById(R.id.golesVisitante);
-        final Switch swQuienSos = (Switch) v.findViewById(R.id.switch1);
+        EditText equipoLocal = (EditText) v.findViewById(R.id.equipoLocal);
+        equipoLocal.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+        EditText golesL = (EditText) v.findViewById(R.id.golesLocal);
+        EditText golesV = (EditText) v.findViewById(R.id.golesVisitante);
+        EditText equipoVisitante = (EditText) v.findViewById(R.id.equipoVisitante);
+        equipoVisitante.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+        Switch swQuienSos = (Switch) v.findViewById(R.id.switch1);
 
-        editText2.setOnKeyListener((view, i, keyEvent) -> {
-            if (keyEvent.getAction() == KeyEvent.ACTION_UP) {
-                if (editText2.getText().length() == 1) {
-                    editText3.requestFocus();
+
+        golesL.setOnKeyListener((view, i, keyEvent) -> {
+            if (keyEvent.getAction() == KeyEvent.ACTION_DOWN) {
+                if (golesL.getText().length() == 1) {
+                    if (i == KeyEvent.KEYCODE_NUM)
+                        golesV.requestFocus();
                 }
             }
-            //TODO
-            // ARREGLAR ESTO
             return true;
         });
 
+
         alert.setView(v);
         alert.setPositiveButton("Guardar", (dialogInterface, i) -> {
-                    String nombreLocal = editText.getText().toString();
-                    String nombreVisitante = editText1.getText().toString();
-                    int golesLocal = Integer.parseInt(editText2.getText().toString());
-                    int golesVisitante = Integer.parseInt(editText3.getText().toString());
+            String nombreLocal = equipoLocal.getText().toString();
+            String gLocal = golesL.getText().toString();
+            if (TextUtils.isEmpty(gLocal)) {
+                Snackbar snackbar = Snackbar.make(recyclerView, "Ingrese Goles Local", Snackbar.LENGTH_LONG);
+                snackbar.show();
+                agregarResultado();
+            }
+            int golesLocal = Integer.parseInt((gLocal));
+            String gVisitante = golesV.getText().toString();
+            if (TextUtils.isEmpty(gVisitante)) {
+                Snackbar snackbar = Snackbar.make(recyclerView, "Ingrese Goles Visitante", Snackbar.LENGTH_LONG);
+                snackbar.show();
+                agregarResultado();
+            }
+            int golesVisitante = Integer.parseInt(gVisitante);
+            String nombreVisitante = equipoVisitante.getText().toString();
 
-                    Historial historial = Historial.actual(nombreRival);
+            Historial historial = Historial.actual(nombreRival);
 
-                    Partido partido = new Partido(nombreLocal, nombreVisitante, golesLocal, golesVisitante, swQuienSos.isChecked() ? Partido.QUIENES.Vistitante.ordinal() : Partido.QUIENES.Local.ordinal(), historial);
-                    partido.save();
+            if (TextUtils.isEmpty(nombreLocal)) {
+                Snackbar snackbar = Snackbar.make(recyclerView, "Ingrese Equipo Local", Snackbar.LENGTH_LONG);
+                snackbar.show();
+                agregarResultado();
 
-                    ActualizarLista();
-                }
-        );
+            } else if (TextUtils.isEmpty(nombreVisitante)) {
+                Snackbar snackbar = Snackbar.make(recyclerView, "Ingrese Equipo Visitante", Snackbar.LENGTH_LONG);
+                snackbar.show();
+                agregarResultado();
+            } else {
+
+                Partido partido = new Partido(nombreLocal, nombreVisitante, golesLocal, golesVisitante, swQuienSos.isChecked() ? Partido.QUIENES.Vistitante.ordinal() : Partido.QUIENES.Local.ordinal(), historial);
+                partido.save();
+
+                ActualizarLista();
+            }
+        });
 
         alert.show();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
