@@ -68,55 +68,49 @@ public class RivalesHistorial extends AppCompatActivity {
         equipoVisitante.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
         Switch swQuienSos = (Switch) v.findViewById(R.id.switch1);
 
-
+        golesL.setFocusableInTouchMode(true);
         golesL.setOnKeyListener((view, i, keyEvent) -> {
             if (keyEvent.getAction() == KeyEvent.ACTION_DOWN) {
                 if (golesL.getText().length() == 1) {
-                    if (i == KeyEvent.KEYCODE_NUM)
-                        golesV.requestFocus();
+                    golesV.requestFocusFromTouch();
                 }
             }
             return true;
         });
 
-
+        alert.setCancelable(false);
         alert.setView(v);
         alert.setPositiveButton("Guardar", (dialogInterface, i) -> {
             String nombreLocal = equipoLocal.getText().toString();
             String gLocal = golesL.getText().toString();
-            if (TextUtils.isEmpty(gLocal)) {
-                Snackbar snackbar = Snackbar.make(recyclerView, "Ingrese Goles Local", Snackbar.LENGTH_LONG);
-                snackbar.show();
-                agregarResultado();
-            }
-            int golesLocal = Integer.parseInt((gLocal));
-            String gVisitante = golesV.getText().toString();
-            if (TextUtils.isEmpty(gVisitante)) {
-                Snackbar snackbar = Snackbar.make(recyclerView, "Ingrese Goles Visitante", Snackbar.LENGTH_LONG);
-                snackbar.show();
-                agregarResultado();
-            }
-            int golesVisitante = Integer.parseInt(gVisitante);
             String nombreVisitante = equipoVisitante.getText().toString();
-
-            Historial historial = Historial.actual(nombreRival);
+            String gVisitante = golesV.getText().toString();
 
             if (TextUtils.isEmpty(nombreLocal)) {
                 Snackbar snackbar = Snackbar.make(recyclerView, "Ingrese Equipo Local", Snackbar.LENGTH_LONG);
                 snackbar.show();
                 agregarResultado();
-
             } else if (TextUtils.isEmpty(nombreVisitante)) {
                 Snackbar snackbar = Snackbar.make(recyclerView, "Ingrese Equipo Visitante", Snackbar.LENGTH_LONG);
                 snackbar.show();
                 agregarResultado();
             } else {
 
-                Partido partido = new Partido(nombreLocal, nombreVisitante, golesLocal, golesVisitante, swQuienSos.isChecked() ? Partido.QUIENES.Vistitante.ordinal() : Partido.QUIENES.Local.ordinal(), historial);
+                Historial historial = Historial.actual(nombreRival);
+
+                Partido partido = new Partido(nombreLocal, nombreVisitante, (TextUtils.isEmpty(gLocal)) ? Integer.parseInt("0") : Integer.parseInt(gLocal), TextUtils.isEmpty(gVisitante) ? Integer.parseInt("0") : Integer.parseInt(gVisitante), swQuienSos.isChecked() ? Partido.QUIENES.Vistitante.ordinal() : Partido.QUIENES.Local.ordinal(), historial);
                 partido.save();
 
                 ActualizarLista();
             }
+
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+        });
+
+        alert.setNegativeButton("Cancelar", (dialogInterface, i) -> {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
         });
 
         alert.show();

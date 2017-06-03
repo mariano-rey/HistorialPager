@@ -87,6 +87,7 @@ public class Rivales extends Fragment {
         alert.setTitle("Nuevo Rival");
         alert.setMessage("Ingrese Nombre");
         alert.setView(edittext);
+        alert.setCancelable(false);
         alert.setPositiveButton("Guardar", (dialogInterface, i) -> {
             String respuesta = edittext.getText().toString();
             if (TextUtils.isEmpty(respuesta)) {
@@ -101,7 +102,14 @@ public class Rivales extends Fragment {
 
                 ActualizarLista();
             }
+            InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
         });
+        alert.setNegativeButton("Cancelar", (dialogInterface, i) -> {
+            InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+        });
+
         alert.show();
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);

@@ -9,4 +9,6 @@
     <color name="primary">#2d2d2d</color>
     <color name="secondary">#303f9f</color>
     <color name="rojo">#F21</color>
+    <color name="granate">#fb61091f</color>
+    <color name="verde">#5c975c</color>
 </resources>

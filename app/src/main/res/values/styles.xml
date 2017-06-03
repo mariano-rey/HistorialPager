@@ -10,4 +10,9 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="Switch" parent="Theme.AppCompat.Light">
+        <item name="colorSwitchThumbNormal">@color/granate</item>
+        <item name="android:textSize">10sp</item>
+    </style>
+
 </resources>
