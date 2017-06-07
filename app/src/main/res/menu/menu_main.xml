@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
+
+    <item
+        android:id="@+id/buscarRival"
+        android:actionViewClass="android.support.v7.widget.SearchView"
+        android:icon="@drawable/ic_search_white_24px"
+        android:title="Buscar Rival"
+        app:showAsAction="ifRoom|collapseActionView" />
+
+    <item
+        android:id="@+id/agregarRival"
+        android:icon="@drawable/ic_agregar_rival"
+        android:title="Agregar Rival"
+        app:showAsAction="ifRoom" />
+
+</menu>

@@ -31,6 +31,7 @@ public class Rivales extends Fragment {
     private List<Historial> listaPerfiles;
     private PerfilesAdapter adapter;
 
+
     public Rivales() {
         // Required empty public constructor
     }
@@ -78,6 +79,7 @@ public class Rivales extends Fragment {
 
         return rootView;
     }
+
 
     private void agregarRival() {
         AlertDialog.Builder alert = new AlertDialog.Builder(getContext());

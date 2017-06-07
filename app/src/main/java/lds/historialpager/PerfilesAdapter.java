@@ -2,6 +2,7 @@ package lds.historialpager;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -55,18 +56,23 @@ class PerfilesAdapter extends RecyclerView.Adapter<PerfilesAdapter.ViewHolder> {
             itemView.setLongClickable(true);
 
             itemView.setOnLongClickListener(view -> {
+                ((AppCompatActivity) context).startSupportActionMode(multiSelectorCallback);
                 multiSelector.setSelectable(true);
                 multiSelector.setSelected(ViewHolder.this, true);
                 return true;
             });
-            nombre = (TextView) itemView.findViewById(R.id.nombre);
 
+            nombre = (TextView) itemView.findViewById(R.id.nombre);
             itemView.setOnClickListener(view -> {
-                if (!multiSelector.isSelectable()) {
+                if (!multiSelector.tapSelection(ViewHolder.this)) {
                     Intent rivalesHistorial = new Intent(context, RivalesHistorial.class);
                     rivalesHistorial.putExtra("nombre", nombre.getText());
                     context.startActivity(rivalesHistorial);
+                } else {
+                    multiSelector.setSelectable(true);
+                    multiSelector.setSelected(ViewHolder.this, true);
                 }
+
             });
 
 //            borrar.setOnClickListener(view -> {
@@ -77,4 +83,11 @@ class PerfilesAdapter extends RecyclerView.Adapter<PerfilesAdapter.ViewHolder> {
 //            });
         }
     }
+
+//    @Override
+//    public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+//        multiSelectorCallback.onCreateActionMode(actionMode, menu);
+//        getContext.getMenuInflater().inflate(R.menu.menu_main, menu);
+//        return true;
+//    }
 }

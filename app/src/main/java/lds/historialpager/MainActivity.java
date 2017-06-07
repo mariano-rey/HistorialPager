@@ -8,14 +8,18 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.SearchView;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -47,6 +51,28 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        MenuItem searchItem = menu.findItem(R.id.buscarRival);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.buscarRival:
+                return true;
+            case R.id.agregarRival:
+                //HAY QUE UNIR ESTO CON EL FRAGMENT
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
     private void dialogPedirNombre() {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
@@ -71,6 +97,12 @@ public class MainActivity extends AppCompatActivity {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
+
+
+//    @Override
+//    public void agregarRival(AlertDialog.Builder alertDialog) {
+//        Rivales rivales = (Rivales) getFragmentManager().findFragmentByTag();
+//    }
 
     public class SectionPagerAdapter extends FragmentPagerAdapter {
         SectionPagerAdapter(FragmentManager fm) {
