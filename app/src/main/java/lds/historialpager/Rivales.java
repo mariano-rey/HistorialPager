@@ -17,8 +17,6 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
-import com.bignerdranch.android.multiselector.MultiSelector;
-
 import java.util.List;
 
 
@@ -57,10 +55,6 @@ public class Rivales extends Fragment {
 
         agregarperfil = (FloatingActionButton) rootView.findViewById(R.id.agregarPerfil);
         agregarperfil.setOnClickListener(view -> agregarRival());
-
-        MultiSelector multiSelector = new MultiSelector();
-        multiSelector.setSelectable(true);
-        multiSelector.setSelectable(false);
 
 
         rV1.addOnScrollListener(new RecyclerView.OnScrollListener() {
