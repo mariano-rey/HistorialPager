@@ -5,16 +5,16 @@
     tools:context=".MainActivity">
 
     <item
-        android:id="@+id/buscarRival"
+        android:id="@+id/buscarTorneo"
         android:icon="@drawable/ic_search_white_24px"
-        android:title="Buscar Rival"
+        android:title="Buscar Torneo"
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="ifRoom|collapseActionView" />
 
     <item
-        android:id="@+id/agregarRival"
-        android:icon="@drawable/ic_agregar_rival"
-        android:title="Agregar Rival"
+        android:id="@+id/agregarTorneo"
+        android:icon="@drawable/ic_agregar_torneo"
+        android:title="Agregar Torneo"
         app:showAsAction="ifRoom" />
 
 </menu>
