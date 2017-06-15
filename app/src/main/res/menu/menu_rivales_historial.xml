@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".RivalesHistorial">
+
+    <item
+        android:id="@+id/buscarPartido"
+        android:icon="@drawable/ic_search_white_24px"
+        android:title="Buscar Partido"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="ifRoom|collapseActionView" />
+
+    <item
+        android:id="@+id/agregarPartido"
+        android:icon="@drawable/ic_agregar_partido"
+        android:title="Agregar Partido"
+        app:showAsAction="ifRoom" />
+</menu>

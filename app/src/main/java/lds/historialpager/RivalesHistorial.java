@@ -1,27 +1,31 @@
 package lds.historialpager;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.ActionBar;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -37,11 +41,8 @@ public class RivalesHistorial extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rivales_historial);
 
-        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setDisplayHomeAsUpEnabled(true);
 
         nombreRival = getIntent().getExtras().getString("nombre");
 
@@ -57,10 +58,41 @@ public class RivalesHistorial extends AppCompatActivity {
         adapter = new PartidosAdapter(this, listaPartidos);
         recyclerView.setAdapter(adapter);
 
-        FloatingActionButton agregarResultado = (FloatingActionButton) findViewById(R.id.agregarPartido);
-        agregarResultado.setOnClickListener(view -> agregarResultado());
+        ContarPartidos();
+    }
 
+    private void ContarPartidos() {
+        TextView partidosJugados = (TextView) findViewById(R.id.partidosJugados);
+        TextView partidosGanados = (TextView) findViewById(R.id.partidosGanados);
+        TextView partidosPerdidos = (TextView) findViewById(R.id.partidosPerdidos);
+        int contadorTotal = recyclerView.getAdapter().getItemCount();
+        int contadorGanados = recyclerView.getAdapter().getItemCount();
 
+        partidosJugados.setText("Partidos Jugados: " + contadorTotal);
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_rivales_historial, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.buscarPartido);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        SearchManager searchManager = (SearchManager) this.getSystemService(Context.SEARCH_SERVICE);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(this.getComponentName()));
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.agregarPartido:
+                agregarResultado();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 
@@ -94,12 +126,10 @@ public class RivalesHistorial extends AppCompatActivity {
             String gVisitante = golesV.getText().toString();
 
             if (TextUtils.isEmpty(nombreLocal)) {
-                Snackbar snackbar = Snackbar.make(recyclerView, "Ingrese Equipo Local", Snackbar.LENGTH_LONG);
-                snackbar.show();
+                Toast.makeText(this, "Ingrese Equipo Local", Toast.LENGTH_LONG).show();
                 agregarResultado();
             } else if (TextUtils.isEmpty(nombreVisitante)) {
-                Snackbar snackbar = Snackbar.make(recyclerView, "Ingrese Equipo Visitante", Snackbar.LENGTH_LONG);
-                snackbar.show();
+                Toast.makeText(this, "Ingrese Equipo Visitante", Toast.LENGTH_LONG).show();
                 agregarResultado();
             } else {
 

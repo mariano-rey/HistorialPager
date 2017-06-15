@@ -16,6 +16,7 @@ import android.text.InputType;
 import android.text.TextUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -65,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
                 dialogPedirNombre();
             } else {
                 memoria.edit().putString(PERFIL, respuesta).apply();
+
+                Toast.makeText(this, "Usuario Guardado", Toast.LENGTH_LONG).show();
             }
         });
 
