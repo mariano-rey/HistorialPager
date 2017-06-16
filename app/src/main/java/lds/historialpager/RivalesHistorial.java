@@ -2,6 +2,7 @@ package lds.historialpager;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
@@ -191,6 +192,22 @@ public class RivalesHistorial extends AppCompatActivity {
             else
                 holder.equipoVisitante.setCompoundDrawablesWithIntrinsicBounds(null, null, punto, null);
 
+            if (actual.getGolesLocal() > actual.getGolesVisitante()) {
+                holder.golesLocal.setTypeface(null, Typeface.BOLD);
+                holder.equipoLocal.setTypeface(null, Typeface.BOLD);
+                holder.equipoVisitante.setTypeface(null, Typeface.NORMAL);
+                holder.golesVisitante.setTypeface(null, Typeface.NORMAL);
+            } else if (actual.getGolesLocal() < actual.getGolesVisitante()) {
+                holder.golesVisitante.setTypeface(null, Typeface.BOLD);
+                holder.equipoVisitante.setTypeface(null, Typeface.BOLD);
+                holder.equipoLocal.setTypeface(null, Typeface.NORMAL);
+                holder.golesLocal.setTypeface(null, Typeface.NORMAL);
+            } else if (actual.getGolesLocal() == actual.getGolesVisitante()) {
+                holder.equipoLocal.setTypeface(null, Typeface.NORMAL);
+                holder.equipoVisitante.setTypeface(null, Typeface.NORMAL);
+                holder.golesLocal.setTypeface(null, Typeface.NORMAL);
+                holder.golesVisitante.setTypeface(null, Typeface.NORMAL);
+            }
         }
 
         @Override
