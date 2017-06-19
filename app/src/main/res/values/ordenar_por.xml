@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="opcionesOrdenar">
+        <item>Nombre</item>
+        <item>Fecha Agredado</item>
+        <item>Más Jugados</item>
+        <item>Más Ganados</item>
+        <item>Más Perdidos</item>
+    </string-array>
+</resources>

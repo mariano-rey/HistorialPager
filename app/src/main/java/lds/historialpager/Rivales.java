@@ -20,7 +20,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.List;
@@ -66,12 +68,20 @@ public class Rivales extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
         inflater.inflate(R.menu.menu_main, menu);
-        super.onCreateOptionsMenu(menu, inflater);
 
         MenuItem searchItem = menu.findItem(R.id.buscarRival);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         SearchManager searchManager = (SearchManager) getContext().getSystemService(Context.SEARCH_SERVICE);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+
+        MenuItem spinnerItem = menu.findItem(R.id.spinner);
+        Spinner spinner = (Spinner) MenuItemCompat.getActionView(spinnerItem);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.opcionesOrdenar, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
+
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -84,6 +94,13 @@ public class Rivales extends Fragment {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+//    @Override
+//    public void onItemSelected(AdapterView<?> parent, View view,
+//                               int pos, long id) {
+//        // An item was selected. You can retrieve the selected item using
+//        // parent.getItemAtPosition(pos)
+//    }
 
     private void agregarRival() {
         AlertDialog.Builder alert = new AlertDialog.Builder(getContext());

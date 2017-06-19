@@ -2,6 +2,7 @@ package lds.historialpager;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -32,10 +33,20 @@ import java.util.List;
 
 public class RivalesHistorial extends AppCompatActivity {
 
+    private static final String GANADOS = "Ganados";
+    //    private static final String PERDIDOS = "Perdidos";
+//    private static final String EMPATADOS = "Empatados";
+    private static final String RIVAL = "Rival";
+    SharedPreferences memoriaGanados;
+    //    SharedPreferences memoriaPerdidos;
+//    SharedPreferences memoriaEmpatados;
+    int contadorGanados;
     private List<Partido> listaPartidos;
     private RecyclerView recyclerView;
     private PartidosAdapter adapter;
     private String nombreRival;
+//    int contadorPerdidos = Integer.parseInt(memoriaPerdidos.getString(RIVAL, null));
+//    int contadorEmpatados = Integer.parseInt(memoriaEmpatados.getString(RIVAL, null));
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,18 +70,29 @@ public class RivalesHistorial extends AppCompatActivity {
         adapter = new PartidosAdapter(this, listaPartidos);
         recyclerView.setAdapter(adapter);
 
+        memoriaGanados = getSharedPreferences(GANADOS, MODE_PRIVATE);
+//        memoriaEmpatados = getSharedPreferences(GANADOS, MODE_PRIVATE);
+//        memoriaPerdidos = getSharedPreferences(GANADOS, MODE_PRIVATE);
+        contadorGanados = memoriaGanados.getInt(RIVAL, 0);
+
         ContarPartidos();
     }
 
     private void ContarPartidos() {
         TextView partidosJugados = (TextView) findViewById(R.id.partidosJugados);
         TextView partidosGanados = (TextView) findViewById(R.id.partidosGanados);
-        TextView partidosPerdidos = (TextView) findViewById(R.id.partidosPerdidos);
+//        TextView partidosPerdidos = (TextView) findViewById(R.id.partidosPerdidos);
+//        TextView partidosEmpatados = (TextView) findViewById(R.id.partidosEmpatados);
+//        TextView diferencia = (TextView) findViewById(R.id.diferenciaHistorialRivales);
         int contadorTotal = recyclerView.getAdapter().getItemCount();
-        int contadorGanados = recyclerView.getAdapter().getItemCount();
+//        int dif = contadorGanados - contadorPerdidos;
 
-        partidosJugados.setText("Partidos Jugados: " + contadorTotal);
+        partidosJugados.setText("Total Jugados: " + contadorTotal);
+        partidosGanados.setText("PG: " + contadorGanados);
+//        partidosPerdidos.setText("Partidos Ganados: " + contadorPerdidos);
+//        partidosEmpatados.setText("Partidos Empatados: " + contadorEmpatados);
 
+//        diferencia.setText("Diferencia: " + dif);
     }
 
     @Override
@@ -185,6 +207,7 @@ public class RivalesHistorial extends AppCompatActivity {
             holder.golesLocal.setText(String.valueOf(actual.getGolesLocal()));
             holder.golesVisitante.setText(String.valueOf(actual.getGolesVisitante()));
             holder.equipoVisitante.setText(actual.getEquipoVisitante());
+
 
             Drawable punto = AppCompatResources.getDrawable(getApplicationContext(), R.drawable.ic_yo);
             if (actual.soyLocal())
