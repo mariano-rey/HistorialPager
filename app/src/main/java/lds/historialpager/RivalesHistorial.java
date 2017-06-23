@@ -32,14 +32,12 @@ import java.util.List;
 
 public class RivalesHistorial extends AppCompatActivity {
 
-    private int contadorGanados;
-    private int contadorPerdidos;
-    private int contadorEmpatados;
-
     private List<Partido> listaPartidos;
     private RecyclerView recyclerView;
     private PartidosAdapter adapter;
     private String nombreRival;
+    private int contadorGanados, contadorPerdidos, contadorEmpatados;
+    private TextView partidosGanados, partidosEmpatados, partidosPerdidos, partidosJugados, diferencia;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +48,7 @@ public class RivalesHistorial extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         nombreRival = getIntent().getExtras().getString("nombre");
+        setTitle(nombreRival);
 
         recyclerView = (RecyclerView) findViewById(R.id.rv_resultados);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -67,22 +66,26 @@ public class RivalesHistorial extends AppCompatActivity {
     }
 
     private void ContarPartidos() {
-        TextView partidosJugados = (TextView) findViewById(R.id.partidosJugados);
-        TextView partidosGanados = (TextView) findViewById(R.id.partidosGanados);
-        TextView partidosPerdidos = (TextView) findViewById(R.id.partidosPerdidos);
-        TextView partidosEmpatados = (TextView) findViewById(R.id.partidosEmpatados);
-        TextView diferencia = (TextView) findViewById(R.id.diferenciaHistorialRivales);
-        int contadorTotal = recyclerView.getAdapter().getItemCount();
-        int dif = contadorGanados - contadorPerdidos;
+        partidosJugados = (TextView) findViewById(R.id.partidosJugados);
+        partidosGanados = (TextView) findViewById(R.id.partidosGanados);
+        partidosPerdidos = (TextView) findViewById(R.id.partidosPerdidos);
+        partidosEmpatados = (TextView) findViewById(R.id.partidosEmpatados);
+        diferencia = (TextView) findViewById(R.id.diferenciaHistorialRivales);
 
-        // PROBAR ESTO!!!!
+        for (Partido partido : listaPartidos) {
+            if (partido.soyLocal() && partido.getGolesLocal() > partido.getGolesVisitante() || !partido.soyLocal() && partido.getGolesLocal() < partido.getGolesVisitante())
+                contadorGanados++;
+            else if (partido.soyLocal() && partido.getGolesLocal() < partido.getGolesVisitante() || !partido.soyLocal() && partido.getGolesLocal() > partido.getGolesVisitante())
+                contadorPerdidos++;
+            else
+                contadorEmpatados++;
+        }
 
-        partidosJugados.setText("Total Jugados: " + contadorTotal);
+        partidosJugados.setText("Total Jugados: " + recyclerView.getAdapter().getItemCount());
         partidosGanados.setText("PG: " + contadorGanados);
         partidosPerdidos.setText("PP: " + contadorPerdidos);
         partidosEmpatados.setText("PE: " + contadorEmpatados);
-
-        diferencia.setText("Diferencia: " + dif);
+        diferencia.setText("Diferencia: " + (contadorGanados - contadorPerdidos));
     }
 
     @Override
@@ -152,6 +155,19 @@ public class RivalesHistorial extends AppCompatActivity {
                 partido.save();
 
                 ActualizarLista();
+                if (partido.soyLocal() && partido.getGolesLocal() > partido.getGolesVisitante() || !partido.soyLocal() && partido.getGolesLocal() < partido.getGolesVisitante()) {
+                    contadorGanados++;
+                    partidosGanados.setText("PG: " + contadorGanados);
+                } else if (partido.soyLocal() && partido.getGolesLocal() < partido.getGolesVisitante() || !partido.soyLocal() && partido.getGolesLocal() > partido.getGolesVisitante()) {
+                    contadorPerdidos++;
+                    partidosPerdidos.setText("PG: " + contadorPerdidos);
+                } else {
+                    contadorEmpatados++;
+                    partidosEmpatados.setText("PG: " + contadorEmpatados);
+                }
+                partidosJugados.setText("Total Jugados: " + recyclerView.getAdapter().getItemCount());
+                diferencia.setText("Diferencia: " + (contadorGanados - contadorPerdidos));
+
             }
 
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -208,32 +224,10 @@ public class RivalesHistorial extends AppCompatActivity {
             if (actual.getGolesLocal() > actual.getGolesVisitante()) {
                 holder.golesLocal.setTypeface(null, Typeface.BOLD);
                 holder.equipoLocal.setTypeface(null, Typeface.BOLD);
-                holder.equipoVisitante.setTypeface(null, Typeface.NORMAL);
-                holder.golesVisitante.setTypeface(null, Typeface.NORMAL);
             } else if (actual.getGolesLocal() < actual.getGolesVisitante()) {
                 holder.golesVisitante.setTypeface(null, Typeface.BOLD);
                 holder.equipoVisitante.setTypeface(null, Typeface.BOLD);
-                holder.equipoLocal.setTypeface(null, Typeface.NORMAL);
-                holder.golesLocal.setTypeface(null, Typeface.NORMAL);
-            } else if (actual.getGolesLocal() == actual.getGolesVisitante()) {
-                holder.equipoLocal.setTypeface(null, Typeface.NORMAL);
-                holder.equipoVisitante.setTypeface(null, Typeface.NORMAL);
-                holder.golesLocal.setTypeface(null, Typeface.NORMAL);
-                holder.golesVisitante.setTypeface(null, Typeface.NORMAL);
-
-                contadorEmpatados++;
             }
-
-            if (actual.soyLocal() && actual.getGolesLocal() > actual.getGolesVisitante()) {
-                contadorGanados++;
-            } else if (actual.soyLocal() && actual.getGolesLocal() < actual.getGolesVisitante()) {
-                contadorPerdidos++;
-            } else if (!actual.soyLocal() && actual.getGolesLocal() < actual.getGolesVisitante()) {
-                contadorGanados++;
-            } else if (!actual.soyLocal() && actual.getGolesLocal() > actual.getGolesVisitante()) {
-                contadorPerdidos++;
-            }
-
         }
 
         @Override

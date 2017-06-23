@@ -6,13 +6,15 @@
 
     <TextView
         android:id="@+id/nombre"
-        android:layout_width="58dp"
-        android:layout_height="17dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="16dp"
         android:text="TextView"
         android:textColor="@color/negro"
-        android:textSize="16dp"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/diferencia"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -22,9 +24,10 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:hint="Diferencia: "
         android:textColor="@color/negro"
-        android:textSize="12dp"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent" />
 
