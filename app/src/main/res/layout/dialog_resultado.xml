@@ -78,7 +78,7 @@
             android:layout_height="wrap_content"
             android:hint="Goles Local"
             android:inputType="number"
-            android:maxLength="1"></EditText>
+            android:maxLength="1" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -99,7 +99,7 @@
             android:layout_height="wrap_content"
             android:hint="Goles Visitante"
             android:inputType="number"
-            android:maxLength="1"></EditText>
+            android:maxLength="1" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -144,8 +144,7 @@
         android:showText="true"
         android:textOff="Local"
         android:textOn="Visitante"
-        android:theme="@style/Switch"
-        android:trackTint="@color/verde"
+        android:trackTint="@color/colorPrimary"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />

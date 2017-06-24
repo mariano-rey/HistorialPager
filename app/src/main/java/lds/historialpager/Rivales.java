@@ -30,7 +30,7 @@ public class Rivales extends Fragment {
     View rootView;
 
     private List<Historial> listaPerfiles;
-    private PerfilesAdapter adapter;
+    private RivalesAdapter adapter;
     private RecyclerView rV1;
 
     public Rivales() {
@@ -54,10 +54,16 @@ public class Rivales extends Fragment {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rV1.getContext(), linearLayoutManager.getOrientation());
         rV1.addItemDecoration(dividerItemDecoration);
         rV1.setHasFixedSize(true);
-        adapter = new PerfilesAdapter(this, listaPerfiles);
+        adapter = new RivalesAdapter(this, listaPerfiles);
         rV1.setAdapter(adapter);
 
         return rootView;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        adapter.notifyDataSetChanged();
     }
 
     @Override

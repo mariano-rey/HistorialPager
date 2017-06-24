@@ -16,7 +16,6 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -81,11 +80,13 @@ public class RivalesHistorial extends AppCompatActivity {
                 contadorEmpatados++;
         }
 
+        int dif = contadorGanados - contadorPerdidos;
+
         partidosJugados.setText("Total Jugados: " + recyclerView.getAdapter().getItemCount());
         partidosGanados.setText("PG: " + contadorGanados);
         partidosPerdidos.setText("PP: " + contadorPerdidos);
         partidosEmpatados.setText("PE: " + contadorEmpatados);
-        diferencia.setText("Diferencia: " + (contadorGanados - contadorPerdidos));
+        diferencia.setText("Diferencia: " + dif);
     }
 
     @Override
@@ -122,16 +123,6 @@ public class RivalesHistorial extends AppCompatActivity {
         EditText equipoVisitante = (EditText) v.findViewById(R.id.equipoVisitante);
         equipoVisitante.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
         Switch swQuienSos = (Switch) v.findViewById(R.id.switch1);
-
-        golesL.setFocusableInTouchMode(true);
-        golesL.setOnKeyListener((view, i, keyEvent) -> {
-            if (keyEvent.getAction() == KeyEvent.ACTION_DOWN) {
-                if (golesL.getText().length() == 1) {
-                    golesV.requestFocusFromTouch();
-                }
-            }
-            return true;
-        });
 
         alert.setCancelable(false);
         alert.setView(v);
